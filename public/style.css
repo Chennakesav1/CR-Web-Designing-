@@ -1,0 +1,312 @@
+/* --- VARIABLES & RESET --- */
+:root {
+    --primary: #bb86fc;
+    --secondary: #03dac6;
+    --bg: #121212;
+    --card-bg: #1e1e1e;
+    --text: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { background-color: var(--bg); color: var(--text); overflow-x: hidden; }
+
+/* --- ANIMATIONS --- */
+@keyframes float { 0% { transform: translateY(0px); } 100% { transform: translateY(-10px); } }
+.hidden { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+.show { opacity: 1; transform: translateY(0); }
+
+/* --- NAVIGATION --- */
+nav {
+    display: flex; justify-content: space-between; align-items: center; padding: 20px 5%;
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(30, 30, 30, 0.8); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.btn-checkout {
+  display: inline-block;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #2ecc71;
+  color: white;
+  border: 2px solid #2ecc71;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+#vanta-bg {
+    position: fixed; /* Keeps it stuck to the screen even when scrolling */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    opacity: 60%; /* Puts it BEHIND your text */
+}
+/* Base style for the Back button */
+#btn-back {
+    background-color: transparent;   /* See-through background */
+    border: 2px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
+    color: #bbbbbb;                  /* Light grey text (less bright than main text) */
+    padding: 10px 24px;
+    border-radius: 8px;              /* Rounded corners */
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 20px;                /* Gap between PayPal buttons and this button */
+    transition: all 0.3s ease;       /* Smooth animation */
+    display: inline-block;
+}
+
+/* Hover Effect */
+#btn-back:hover {
+    border-color: #ffffff;           /* Border becomes bright white */
+    color: #ffffff;                  /* Text becomes bright white */
+    transform: translateX(-5px);     /* Moves slightly LEFT to indicate "Going Back" */
+    background-color: rgba(255, 255, 255, 0.1); /* Slight glow background */
+}
+/* Hover Effect */
+.btn-checkout:hover {
+  
+  background-color: white;
+  color: #2ecc71;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* Click effect */
+.btn-checkout:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.logo { font-size: 1.5rem; color: var(--primary); font-weight: bold; }
+.nav-links { list-style: none; display: flex; gap: 30px; }
+.nav-links a { text-decoration: none; color: #fff; transition: 0.3s; }
+.nav-links a:hover { color: var(--primary); }
+.cart-icon { cursor: pointer; background: var(--secondary); color: #000; padding: 8px 15px; border-radius: 20px; font-weight: bold; transition: 0.3s; }
+.cart-icon:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--secondary); }
+
+/* --- HERO --- */
+.hero {
+    position: relative; text-align: center; height: 80vh;
+    display: flex; justify-content: center; align-items: center;
+    /* You can replace this URL with a local video background if you want */
+    background: url('https://source.unsplash.com/random/1920x1080/?technology') center/cover;
+}
+.hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
+.hero-content { position: relative; z-index: 2; }
+.hero h1 { font-size: 4rem; margin-bottom: 20px; }
+.hero button {  margin-top: 40px;  padding: 15px 40px; background: transparent; color: var(--primary); border: 2px solid var(--primary); font-size: 1.2rem; cursor: pointer; border-radius: 30px; transition: 0.3s; }
+.hero button:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
+
+/* --- GRID & 3D CARDS --- */
+.container { padding: 80px 10%; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; perspective: 1000px; }
+
+.card {
+    background: var(--card-bg); border-radius: 15px; overflow: hidden;
+    transition: transform 0.1s ease-out; transform-style: preserve-3d;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Updated for Video/Image Support */
+.media-container {
+    width: 100%; height: 220px; overflow: hidden; transform: translateZ(30px);
+}
+.card-media {
+    width: 100%; height: 100%; object-fit: cover;
+}
+.about-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.about-text {
+    flex: 1;
+    font-weight: 400;
+}
+
+.about-image {
+    flex: 1;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 12px;
+}
+.about-heading {
+    font-size: 28px;      /* increase size */
+    font-weight: 700;     /* strong bold */
+    margin-bottom: 20px;  /* space below heading */
+}
+
+.about-text p {
+    font-size: 16px;
+    line-height: 1.8;     /* gap between lines */
+    margin-bottom: 15px;  /* gap between paragraphs */
+}
+/* 1. Create the gap between each Name/Email/Message block */
+.form-group {
+    margin-bottom: 25px; /* This pushes the next element down */
+}
+
+/* 2. Style the labels (the words Name, Email, etc.) */
+.form-group label {
+    display: block;      /* Ensures label sits on its own line above the input */
+    margin-bottom: 8px;  /* Small gap between the label and the input box */
+    font-size: 16px;
+    color: #ffffff;      /* White text to match your dark theme */
+    font-weight: 500;
+}
+#product-grid {
+    position: relative;
+    z-index: 20;
+}
+
+/* 3. Make the input boxes look modern and clean */
+.form-group input, 
+.form-group textarea {
+    width: 100%;         /* Fills the container width */
+    padding: 12px 15px;  /* Adds space inside the box so text isn't squashed */
+    border-radius: 8px;  /* Rounds the corners */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    color: #fff;         /* Text color inside the box */
+    font-size: 14px;
+    outline: none;       /* Removes the default blue outline on click */
+    box-sizing: border-box; /* Ensures padding doesn't mess up width */
+}
+.section-title{
+    font-weight: 700;
+    margin-bottom: 40px;
+    font-size: 32px;
+    text-align: center;
+    color: #ffffff;
+}
+/* Base style for the button */
+.btn-primary {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #4a90e2; /* Nice blue color */
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 30px; /* Makes it rounded/pill-shaped */
+    cursor: pointer;
+    transition: all 0.3s ease; /* This makes the animation smooth */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 15px; /* Adds a small gap above the button */
+}
+
+/* Hover Effect - What happens when mouse is on it */
+.btn-primary:hover {
+    background-color: #357abd; /* Darker blue */
+    transform: translateY(-2px); /* Moves up slightly */
+    box-shadow: 0 6px 12px rgba(74, 144, 226, 0.4); /* Glow effect */
+}
+
+/* Active Effect - What happens when you click it */
+.btn-primary:active {
+    transform: translateY(1px); /* Moves down slightly */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Add a glow effect when you click inside a box */
+.form-group input:focus, 
+.form-group textarea:focus {
+    border-color: #4a90e2; /* Change to your preferred highlight color */
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* 4. Fix the button spacing */
+.btn-primary {
+    margin-top: 10px;
+    padding: 12px 24px;
+    cursor: pointer;
+    /* Add background-color and color here if not already defined */
+}
+
+.card-content { padding: 25px; transform: translateZ(30px); background: var(--card-bg); }
+.card-title { font-size: 1.4rem; margin-bottom: 10px; color: #fff; }
+.card-total{ margin-top: 20px;}
+.card-price {  margin-top: 20px;  font-size: 1.2rem; color: var(--secondary); font-weight: bold; display: block; margin-bottom: 15px; }
+.btn-buy { width: 100%; padding: 12px; border: none; border-radius: 8px; background: linear-gradient(45deg, var(--primary), #9965f4); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+.btn-buy:hover { filter: brightness(1.2); }
+
+/* --- FORMS & MODAL --- */
+input, textarea { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; margin-bottom: 15px; }
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 200; }
+.modal-content { background: #1e1e1e; margin: 5% auto; padding: 40px; width: 90%; max-width: 500px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); animation: float 3s ease-in-out infinite alternate; }
+.close-btn { float: right; font-size: 24px; cursor: pointer; color: #fff; }
+.about-content { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+.about-image img { width: 100%; max-width: 500px; border-radius: 10px; }
+footer { text-align: center; padding: 40px; background: #000; margin-top: 50px; color: #666; }
+.floating-ig {
+    position: fixed;          /* Keeps it stuck to the screen */
+    bottom: 30px;             /* Distance from bottom */
+    right: 30px;              /* Distance from right corner */
+    width: 60px;              /* Size of the button */
+    height: 60px;
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); /* Instagram Gradient */
+    border-radius: 50%;       /* Makes it a perfect circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Adds a shadow */
+    z-index: 1000;            /* Ensures it stays on top of other content */
+    transition: all 0.3s ease; /* Smooth animation */
+}
+
+/* Hover Effect */
+.floating-ig:hover {
+    transform: translateY(-5px) scale(1.1); /* Moves up and grows slightly */
+    box-shadow: 0 8px 25px rgba(214, 36, 159, 0.5); /* Glows with pink shadow */
+}
+/* Container to hold the icons in the bottom corner */
+.social-bar {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column; /* This makes them stack vertically */
+    gap: 15px;              /* Space between the icons */
+    z-index: 1000;          /* Keeps them on top of everything */
+}
+
+/* Base style for the round buttons */
+.social-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;     /* Makes them perfectly round */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: all 0.3s ease; /* Smooth animation */
+    cursor: pointer;
+}
+
+/* GitHub Color (Black) */
+.social-item.github {
+    background-color: #333;
+}
+
+/* LinkedIn Color (Blue) */
+.social-item.linkedin {
+    background-color: #0077b5;
+}
+
+/* Instagram Color (Gradient) */
+.social-item.instagram {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+/* Hover Effect - Makes them pop out to the left slightly */
+.social-item:hover {
+    transform: translateX(-5px) scale(1.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+}

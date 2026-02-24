@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secure Access</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #eef2f3; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        h2 { color: #333; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #0056b3; }
+        .toggle-link { margin-top: 15px; font-size: 14px; color: #666; cursor: pointer; }
+        .toggle-link span { color: #007bff; font-weight: bold; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 id="form-title">Login</h2>
+
+    <div id="input-section">
+        <input type="text" id="name" placeholder="Full Name" class="hidden"> <input type="tel" id="phone" placeholder="Phone Number" class="hidden"> <input type="email" id="email" placeholder="Email Address">
+        <button onclick="sendOTP()">Get OTP</button>
+    </div>
+
+    <div id="otp-section" class="hidden">
+        <p>Enter the code sent to your email:</p>
+        <input type="text" id="otp" placeholder="Enter 6-digit OTP">
+        <button onclick="verifyOTP()">Verify & Proceed</button>
+    </div>
+
+    <p class="toggle-link" onclick="toggleMode()">
+        <span id="toggle-text">New here? Create an Account</span>
+    </p>
+</div>
+
+<script>
+    let isSignup = false; // Default is Login
+    let userEmail = "";
+
+    function toggleMode() {
+        isSignup = !isSignup;
+        const title = document.getElementById('form-title');
+        const nameInput = document.getElementById('name');
+        const phoneInput = document.getElementById('phone');
+        const toggleText = document.getElementById('toggle-text');
+
+        // Show/Hide Name and Phone fields
+        if (isSignup) {
+            title.innerText = "Sign Up";
+            nameInput.classList.remove('hidden');
+            phoneInput.classList.remove('hidden');
+            toggleText.innerText = "Already have an account? Login";
+        } else {
+            title.innerText = "Login";
+            nameInput.classList.add('hidden');
+            phoneInput.classList.add('hidden');
+            toggleText.innerText = "New here? Create an Account";
+        }
+    }
+
+    async function sendOTP() {
+        userEmail = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+        
+        if (!userEmail) return alert("Please enter email");
+        if (isSignup && !name) return alert("Please enter your name");
+
+        const response = await fetch('/send-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: userEmail, type: isSignup ? 'signup' : 'login' })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            document.getElementById('input-section').style.display = 'none';
+            document.getElementById('otp-section').style.display = 'block';
+            document.querySelector('.toggle-link').style.display = 'none';
+        } else {
+            alert(data.message);
+        }
+    }
+
+    async function verifyOTP() {
+        const otp = document.getElementById('otp').value;
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+
+        const response = await fetch('/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                email: userEmail, 
+                otp: otp, 
+                name: name,
+                phone: phone,
+                type: isSignup ? 'signup' : 'login'
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            // REDIRECT TO YOUR MAIN PAGE
+            window.location.href = "home.html"; 
+        } else {
+            alert(data.message);
+        }
+    }
+</script>
+
+
+</body>
+</html>
