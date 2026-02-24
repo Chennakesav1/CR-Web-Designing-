@@ -67,10 +67,14 @@ const Payment = mongoose.model('Payment', paymentSchema);
 // ==========================================
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: EMAIL_USER, pass: EMAIL_PASS }
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, 
+  auth: {
+    user: process.env.EMAIL_USER, // Ensure this matches your .env variable names
+    pass: process.env.EMAIL_PASS  // This MUST be your 16-letter App Password
+  }
 });
-
 const razorpay = new Razorpay({
     key_id: RAZORPAY_KEY_ID,
     key_secret: RAZORPAY_SECRET
