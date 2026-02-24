@@ -11,6 +11,10 @@ const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const path = require('path');
 
+
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
