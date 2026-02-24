@@ -93,6 +93,8 @@ app.post('/send-otp', async (req, res) => {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         otpStore[email] = otp;
 
+       // ... (keep the top part of the route the same) ...
+
         const mailOptions = {
             from: EMAIL_USER,
             to: email,
@@ -101,11 +103,16 @@ app.post('/send-otp', async (req, res) => {
         };
 
         transporter.sendMail(mailOptions, (error) => {
-            if (error) return res.json({ success: false, message: "Error sending email" });
+            if (error) {
+                console.error("❌ NODEMAILER ERROR:", error); // <-- This prints to Render logs!
+                return res.json({ success: false, message: "Error sending email. Check logs." }); 
+            }
             res.json({ success: true, message: "OTP sent successfully!" });
         });
     } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
+        console.error("❌ SERVER CRASH IN SEND-OTP:", err); // <-- This prints to Render logs!
+        // Changed "error" to "message" so your frontend alert() works properly
+        res.status(500).json({ success: false, message: "Internal Server Error: " + err.message }); 
     }
 });
 
