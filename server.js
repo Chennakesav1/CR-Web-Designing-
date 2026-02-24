@@ -68,8 +68,9 @@ const Payment = mongoose.model('Payment', paymentSchema);
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 465,
-  secure: true, 
+  port: 587,
+  secure: false,
+  requireTLS:true, 
   auth: {
     user: process.env.EMAIL_USER, // Ensure this matches your .env variable names
     pass: process.env.EMAIL_PASS  // This MUST be your 16-letter App Password
