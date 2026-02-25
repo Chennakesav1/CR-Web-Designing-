@@ -37,38 +37,37 @@ nav {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 #vanta-bg {
-    position: fixed; /* Keeps it stuck to the screen even when scrolling */
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
     z-index: -1;
-    opacity: 60%; /* Puts it BEHIND your text */
+    opacity: 60%; 
 }
 /* Base style for the Back button */
 #btn-back {
-    background-color: transparent;   /* See-through background */
-    border: 2px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
-    color: #bbbbbb;                  /* Light grey text (less bright than main text) */
+    background-color: transparent;   
+    border: 2px solid rgba(255, 255, 255, 0.3); 
+    color: #bbbbbb;                  
     padding: 10px 24px;
-    border-radius: 8px;              /* Rounded corners */
+    border-radius: 8px;              
     font-size: 14px;
     cursor: pointer;
-    margin-top: 20px;                /* Gap between PayPal buttons and this button */
-    transition: all 0.3s ease;       /* Smooth animation */
+    margin-top: 20px;                
+    transition: all 0.3s ease;       
     display: inline-block;
 }
 
 /* Hover Effect */
 #btn-back:hover {
-    border-color: #ffffff;           /* Border becomes bright white */
-    color: #ffffff;                  /* Text becomes bright white */
-    transform: translateX(-5px);     /* Moves slightly LEFT to indicate "Going Back" */
-    background-color: rgba(255, 255, 255, 0.1); /* Slight glow background */
+    border-color: #ffffff;           
+    color: #ffffff;                  
+    transform: translateX(-5px);     
+    background-color: rgba(255, 255, 255, 0.1); 
 }
 /* Hover Effect */
 .btn-checkout:hover {
-  
   background-color: white;
   color: #2ecc71;
   transform: translateY(-3px);
@@ -91,7 +90,6 @@ nav {
 .hero {
     position: relative; text-align: center; height: 80vh;
     display: flex; justify-content: center; align-items: center;
-    /* You can replace this URL with a local video background if you want */
     background: url('https://source.unsplash.com/random/1920x1080/?technology') center/cover;
 }
 .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
@@ -102,7 +100,7 @@ nav {
 
 /* --- GRID & 3D CARDS --- */
 .container { padding: 80px 10%; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; perspective: 1000px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; perspective: 1000px; }
 
 .card {
     background: var(--card-bg); border-radius: 15px; overflow: hidden;
@@ -110,13 +108,23 @@ nav {
     box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Updated for Video/Image Support */
+/* Updated for Uncut Video/Image Support */
 .media-container {
-    width: 100%; height: 220px; overflow: hidden; transform: translateZ(30px);
+    width: 100%; 
+    aspect-ratio: 16 / 9; 
+    overflow: hidden; 
+    transform: translateZ(30px);
+    background-color: #000; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .card-media {
-    width: 100%; height: 100%; object-fit: cover;
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain; 
 }
+
 .about-content {
     display: flex;
     align-items: center;
@@ -138,27 +146,25 @@ nav {
     border-radius: 12px;
 }
 .about-heading {
-    font-size: 28px;      /* increase size */
-    font-weight: 700;     /* strong bold */
-    margin-bottom: 20px;  /* space below heading */
+    font-size: 28px;      
+    font-weight: 700;     
+    margin-bottom: 20px;  
 }
 
 .about-text p {
     font-size: 16px;
-    line-height: 1.8;     /* gap between lines */
-    margin-bottom: 15px;  /* gap between paragraphs */
+    line-height: 1.8;     
+    margin-bottom: 15px;  
 }
-/* 1. Create the gap between each Name/Email/Message block */
 .form-group {
-    margin-bottom: 25px; /* This pushes the next element down */
+    margin-bottom: 25px; 
 }
 
-/* 2. Style the labels (the words Name, Email, etc.) */
 .form-group label {
-    display: block;      /* Ensures label sits on its own line above the input */
-    margin-bottom: 8px;  /* Small gap between the label and the input box */
+    display: block;      
+    margin-bottom: 8px;  
     font-size: 16px;
-    color: #ffffff;      /* White text to match your dark theme */
+    color: #ffffff;      
     font-weight: 500;
 }
 #product-grid {
@@ -166,18 +172,17 @@ nav {
     z-index: 20;
 }
 
-/* 3. Make the input boxes look modern and clean */
 .form-group input, 
 .form-group textarea {
-    width: 100%;         /* Fills the container width */
-    padding: 12px 15px;  /* Adds space inside the box so text isn't squashed */
-    border-radius: 8px;  /* Rounds the corners */
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
-    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-    color: #fff;         /* Text color inside the box */
+    width: 100%;         
+    padding: 12px 15px;  
+    border-radius: 8px;  
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    background-color: rgba(255, 255, 255, 0.1); 
+    color: #fff;         
     font-size: 14px;
-    outline: none;       /* Removes the default blue outline on click */
-    box-sizing: border-box; /* Ensures padding doesn't mess up width */
+    outline: none;       
+    box-sizing: border-box; 
 }
 .section-title{
     font-weight: 700;
@@ -186,48 +191,42 @@ nav {
     text-align: center;
     color: #ffffff;
 }
-/* Base style for the button */
 .btn-primary {
     display: inline-block;
     padding: 12px 30px;
-    background-color: #4a90e2; /* Nice blue color */
+    background-color: #4a90e2; 
     color: white;
     font-size: 16px;
     font-weight: 600;
     border: none;
-    border-radius: 30px; /* Makes it rounded/pill-shaped */
+    border-radius: 30px; 
     cursor: pointer;
-    transition: all 0.3s ease; /* This makes the animation smooth */
+    transition: all 0.3s ease; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 15px; /* Adds a small gap above the button */
+    margin-top: 15px; 
 }
 
-/* Hover Effect - What happens when mouse is on it */
 .btn-primary:hover {
-    background-color: #357abd; /* Darker blue */
-    transform: translateY(-2px); /* Moves up slightly */
-    box-shadow: 0 6px 12px rgba(74, 144, 226, 0.4); /* Glow effect */
+    background-color: #357abd; 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 12px rgba(74, 144, 226, 0.4); 
 }
 
-/* Active Effect - What happens when you click it */
 .btn-primary:active {
-    transform: translateY(1px); /* Moves down slightly */
+    transform: translateY(1px); 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Optional: Add a glow effect when you click inside a box */
 .form-group input:focus, 
 .form-group textarea:focus {
-    border-color: #4a90e2; /* Change to your preferred highlight color */
+    border-color: #4a90e2; 
     background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* 4. Fix the button spacing */
 .btn-primary {
     margin-top: 10px;
     padding: 12px 24px;
     cursor: pointer;
-    /* Add background-color and color here if not already defined */
 }
 
 .card-content { padding: 25px; transform: translateZ(30px); background: var(--card-bg); }
@@ -246,66 +245,60 @@ input, textarea { width: 100%; padding: 15px; background: rgba(255,255,255,0.05)
 .about-image img { width: 100%; max-width: 500px; border-radius: 10px; }
 footer { text-align: center; padding: 40px; background: #000; margin-top: 50px; color: #666; }
 .floating-ig {
-    position: fixed;          /* Keeps it stuck to the screen */
-    bottom: 30px;             /* Distance from bottom */
-    right: 30px;              /* Distance from right corner */
-    width: 60px;              /* Size of the button */
+    position: fixed;          
+    bottom: 30px;             
+    right: 30px;              
+    width: 60px;              
     height: 60px;
-    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); /* Instagram Gradient */
-    border-radius: 50%;       /* Makes it a perfect circle */
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); 
+    border-radius: 50%;       
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Adds a shadow */
-    z-index: 1000;            /* Ensures it stays on top of other content */
-    transition: all 0.3s ease; /* Smooth animation */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+    z-index: 1000;            
+    transition: all 0.3s ease; 
 }
 
-/* Hover Effect */
 .floating-ig:hover {
-    transform: translateY(-5px) scale(1.1); /* Moves up and grows slightly */
-    box-shadow: 0 8px 25px rgba(214, 36, 159, 0.5); /* Glows with pink shadow */
+    transform: translateY(-5px) scale(1.1); 
+    box-shadow: 0 8px 25px rgba(214, 36, 159, 0.5); 
 }
-/* Container to hold the icons in the bottom corner */
+
 .social-bar {
     position: fixed;
     bottom: 30px;
     right: 30px;
     display: flex;
-    flex-direction: column; /* This makes them stack vertically */
-    gap: 15px;              /* Space between the icons */
-    z-index: 1000;          /* Keeps them on top of everything */
+    flex-direction: column; 
+    gap: 15px;              
+    z-index: 1000;          
 }
 
-/* Base style for the round buttons */
 .social-item {
     width: 50px;
     height: 50px;
-    border-radius: 50%;     /* Makes them perfectly round */
+    border-radius: 50%;     
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    transition: all 0.3s ease; /* Smooth animation */
+    transition: all 0.3s ease; 
     cursor: pointer;
 }
 
-/* GitHub Color (Black) */
 .social-item.github {
     background-color: #333;
 }
 
-/* LinkedIn Color (Blue) */
 .social-item.linkedin {
     background-color: #0077b5;
 }
 
-/* Instagram Color (Gradient) */
 .social-item.instagram {
     background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
 }
 
-/* Hover Effect - Makes them pop out to the left slightly */
 .social-item:hover {
     transform: translateX(-5px) scale(1.1);
     box-shadow: 0 6px 12px rgba(0,0,0,0.5);
@@ -313,18 +306,16 @@ footer { text-align: center; padding: 40px; background: #000; margin-top: 50px; 
 
 /* =========================================
    RESPONSIVE DESIGN (Tablets & Mobiles)
-   Will not affect desktop views
    ========================================= */
-
-/* Make the product grid automatically responsive */
-#product-grid, .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
 
 /* Tablets (768px and below) */
 @media screen and (max-width: 768px) {
+    /* Adjust grid to 2 columns on tablets */
+    #product-grid, .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
     /* Stack navigation */
     nav {
         flex-direction: column;
@@ -368,6 +359,11 @@ footer { text-align: center; padding: 40px; background: #000; margin-top: 50px; 
 
 /* Mobile Phones (480px and below) */
 @media screen and (max-width: 480px) {
+    /* Adjust grid to 1 column on mobile phones */
+    #product-grid, .grid {
+        grid-template-columns: 1fr;
+    }
+
     .hero-content h1 {
         font-size: 2rem;
     }
