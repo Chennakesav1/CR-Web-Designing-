@@ -100,29 +100,51 @@ nav {
 
 /* --- GRID & 3D CARDS --- */
 .container { padding: 80px 10%; }
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; perspective: 1000px; }
-
-.card {
-    background: var(--card-bg); border-radius: 15px; overflow: hidden;
-    transition: transform 0.1s ease-out; transform-style: preserve-3d;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05);
+/* 1. Removed perspective */
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 40px; 
 }
 
-/* Updated for Uncut Video/Image Support */
+/* 2. Removed transform-style: preserve-3d */
+.card {
+    background: var(--card-bg); 
+    border-radius: 15px; 
+    overflow: hidden;
+    transition: transform 0.3s ease-out; /* Smoothed out transition */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* 3. Removed transform: translateZ(30px) */
 .media-container {
     width: 100%; 
     aspect-ratio: 16 / 9; 
     overflow: hidden; 
-    transform: translateZ(30px);
     background-color: #000; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+/* 4. Removed transform: translateZ(30px) */
+.card-content { 
+    padding: 25px; 
+    background: var(--card-bg); 
+}
 .card-media {
     width: 100%; 
     height: 100%; 
+    display: block; /* Removes weird spacing underneath videos */
+    
+    /* CHOOSE ONE OF THE FOLLOWING: */
+    
+    /* Option A: Shows the whole video, no zooming, but might add black bars on the sides/top */
     object-fit: contain; 
+    
+    /* Option B: Fills the entire box perfectly, but will zoom/crop the edges of the video */
+    /* object-fit: cover; */
 }
 
 .about-content {
@@ -287,6 +309,7 @@ footer { text-align: center; padding: 40px; background: #000; margin-top: 50px; 
     cursor: pointer;
 }
 
+
 .social-item.github {
     background-color: #333;
 }
@@ -381,6 +404,96 @@ footer { text-align: center; padding: 40px; background: #000; margin-top: 50px; 
     footer {
         flex-direction: column;
         text-align: center;
+        gap: 15px;
+    }
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN (Tablets & Mobiles)
+   ========================================= */
+
+/* Tablets (768px and below) */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 60px 5%; /* Reduces wasted space on the sides */
+    }
+
+    #product-grid, .grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+        gap: 20px;
+    }
+
+    nav {
+        flex-direction: column;
+        padding: 15px;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .about-image img {
+        width: 100%;
+        height: auto;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin: 10% auto;
+        padding: 20px;
+    }
+}
+
+/* Mobile Phones (480px and below) */
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 40px 15px; /* Maximizes screen real estate for mobile cards */
+    }
+
+    #product-grid, .grid {
+        grid-template-columns: 1fr; /* 1 card per row */
+        gap: 25px;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .card-content {
+        padding: 15px; /* Tighter padding inside cards for mobile */
+    }
+
+    /* Scales down the floating social buttons so they don't block content */
+    .social-bar, .floating-ig {
+        transform: scale(0.8);
+        transform-origin: bottom right;
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    footer {
+        flex-direction: column;
         gap: 15px;
     }
 }
