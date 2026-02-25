@@ -88,15 +88,27 @@ let otpStore = {};
 // Your OTP Route 
 app.post('/send-otp', async (req, res) => {
   try {
-    const userEmail = req.body.email; 
+    // 1. Get the email AND the type (login or signup) from the frontend
+    const { email, type } = req.body; 
     
-    // 1. Generate a random 6-digit OTP
+    // 🔴 FIX: Check if the user already exists in your MongoDB database
+    const existingUser = await User.findOne({ email: email });
+
+    // If they are trying to LOGIN but the email is NOT in the database:
+    if (type === 'login' && !existingUser) {
+      return res.status(400).json({ success: false, message: 'Account not registered. Please click "New here" to create an account.' });
+    }
+
+    // If they are trying to SIGN UP but the email IS already in the database:
+    if (type === 'signup' && existingUser) {
+      return res.status(400).json({ success: false, message: 'Email already registered. Please login instead.' });
+    }
+
+    // 2. Generate a random 6-digit OTP and save it
     const otpCode = Math.floor(100000 + Math.random() * 900000); 
+    otpStore[email] = otpCode.toString(); 
 
-    // 👇 BUG FIX #1: SAVE THE OTP TO MEMORY SO WE CAN VERIFY IT LATER!
-    otpStore[userEmail] = otpCode.toString();
-
-    // 2. Send the email using Brevo
+    // 3. Send the email using Brevo's HTTPS API
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
@@ -109,7 +121,7 @@ app.post('/send-otp', async (req, res) => {
           email: 'chennakesavarao89@gmail.com', 
           name: 'C.R-Web-Designing' 
         },
-        to: [{ email: userEmail }],
+        to: [{ email: email }],
         subject: 'Your Login OTP',
         textContent: `Your OTP code is: ${otpCode}. Please do not share this code.`
       })
@@ -118,13 +130,10 @@ app.post('/send-otp', async (req, res) => {
     if (!response.ok) {
        const errorData = await response.json();
        console.error('❌ Brevo API Error:', errorData);
-       // 👇 Added success: false so frontend knows it failed
        return res.status(500).json({ success: false, message: 'Failed to send OTP' });
     }
 
-    console.log('✅ OTP Email sent successfully via Brevo');
-    
-    // 👇 BUG FIX #2: ADDED 'success: true' SO THE FRONTEND CHANGES THE PAGE!
+    console.log(`✅ OTP Email sent successfully to ${email} for ${type}`);
     res.status(200).json({ success: true, message: 'OTP Sent successfully' });
 
   } catch (error) {
