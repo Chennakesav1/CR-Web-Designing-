@@ -102,8 +102,8 @@ app.post('/send-otp', async (req, res) => {
       },
       body: JSON.stringify({
         sender: { 
-          email: 'YOUR_VERIFIED_EMAIL@gmail.com', // ⚠️ CHANGE THIS: Must match the email you verified in Step 1
-          name: 'Your Website Name' 
+          email: 'chennakesavarao89@gmail.com', // ⚠️ CHANGE THIS: Must match the email you verified in Step 1
+          name: 'C.R-Web-Designing' 
         },
         to: [{ email: userEmail }],
         subject: 'Your Login OTP',
