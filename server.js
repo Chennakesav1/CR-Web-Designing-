@@ -4,7 +4,7 @@ require('dotenv').config(); // 👈 MUST BE AT THE VERY TOP
 
 const express = require('express');
 const mongoose = require('mongoose');
-const nodemailer = require('nodemailer');
+
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const Razorpay = require('razorpay');
@@ -70,17 +70,7 @@ const Payment = mongoose.model('Payment', paymentSchema);
 // 3. INITIALIZE SERVICES
 // ==========================================
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: true,
-  family:4,
- 
-  auth: {
-    user: process.env.EMAIL_USER, // Ensure this matches your .env variable names
-    pass: process.env.EMAIL_PASS  // This MUST be your 16-letter App Password
-  }
-});
+
 const razorpay = new Razorpay({
     key_id: RAZORPAY_KEY_ID,
     key_secret: RAZORPAY_SECRET
@@ -93,37 +83,49 @@ let otpStore = {};
 // ==========================================
 
 // --- AUTH ROUTES ---
+// Your OTP Route 
 app.post('/send-otp', async (req, res) => {
-    const { email, type } = req.body;
-    try {
-        const user = await User.findOne({ email });
-        if (type === 'signup' && user) return res.json({ success: false, message: "Account already exists! Please Login." });
-        if (type === 'login' && !user) return res.json({ success: false, message: "No account found. Please Sign Up first." });
+  try {
+    // 1. Get the user's email from the frontend request
+    const userEmail = req.body.email; 
+    
+    // 2. Generate a random 6-digit OTP
+    const otpCode = Math.floor(100000 + Math.random() * 900000); 
 
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        otpStore[email] = otp;
+    // 3. Send the email using Brevo's HTTPS API (bypasses Render's port blocks)
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': process.env.BREVO_API_KEY,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender: { 
+          email: 'YOUR_VERIFIED_EMAIL@gmail.com', // ⚠️ CHANGE THIS: Must match the email you verified in Step 1
+          name: 'Your Website Name' 
+        },
+        to: [{ email: userEmail }],
+        subject: 'Your Login OTP',
+        textContent: `Your OTP code is: ${otpCode}. Please do not share this code.`
+      })
+    });
 
-       // ... (keep the top part of the route the same) ...
-
-        const mailOptions = {
-            from: EMAIL_USER,
-            to: email,
-            subject: `${type.toUpperCase()} Verification Code`,
-            text: `Your OTP is: ${otp}`
-        };
-
-        transporter.sendMail(mailOptions, (error) => {
-            if (error) {
-                console.error("❌ NODEMAILER ERROR:", error); // <-- This prints to Render logs!
-                return res.json({ success: false, message: "Error sending email. Check logs." }); 
-            }
-            res.json({ success: true, message: "OTP sent successfully!" });
-        });
-    } catch (err) {
-        console.error("❌ SERVER CRASH IN SEND-OTP:", err); // <-- This prints to Render logs!
-        // Changed "error" to "message" so your frontend alert() works properly
-        res.status(500).json({ success: false, message: "Internal Server Error: " + err.message }); 
+    // 4. Check if Brevo accepted the request
+    if (!response.ok) {
+       const errorData = await response.json();
+       console.error('❌ Brevo API Error:', errorData);
+       return res.status(500).json({ message: 'Failed to send OTP' });
     }
+
+    // 5. Success!
+    console.log('✅ OTP Email sent successfully via Brevo');
+    res.status(200).json({ message: 'OTP Sent successfully' });
+
+  } catch (error) {
+    console.error('❌ Server Error:', error);
+    res.status(500).json({ message: 'Failed to process OTP request' });
+  }
 });
 
 app.post('/verify-otp', async (req, res) => {
