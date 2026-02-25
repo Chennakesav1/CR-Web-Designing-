@@ -84,15 +84,19 @@ let otpStore = {};
 
 // --- AUTH ROUTES ---
 // Your OTP Route 
+// --- AUTH ROUTES ---
+// Your OTP Route 
 app.post('/send-otp', async (req, res) => {
   try {
-    // 1. Get the user's email from the frontend request
     const userEmail = req.body.email; 
     
-    // 2. Generate a random 6-digit OTP
+    // 1. Generate a random 6-digit OTP
     const otpCode = Math.floor(100000 + Math.random() * 900000); 
 
-    // 3. Send the email using Brevo's HTTPS API (bypasses Render's port blocks)
+    // 👇 BUG FIX #1: SAVE THE OTP TO MEMORY SO WE CAN VERIFY IT LATER!
+    otpStore[userEmail] = otpCode.toString();
+
+    // 2. Send the email using Brevo
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
@@ -102,7 +106,7 @@ app.post('/send-otp', async (req, res) => {
       },
       body: JSON.stringify({
         sender: { 
-          email: 'chennakesavarao89@gmail.com', // ⚠️ CHANGE THIS: Must match the email you verified in Step 1
+          email: 'chennakesavarao89@gmail.com', 
           name: 'C.R-Web-Designing' 
         },
         to: [{ email: userEmail }],
@@ -111,23 +115,23 @@ app.post('/send-otp', async (req, res) => {
       })
     });
 
-    // 4. Check if Brevo accepted the request
     if (!response.ok) {
        const errorData = await response.json();
        console.error('❌ Brevo API Error:', errorData);
-       return res.status(500).json({ message: 'Failed to send OTP' });
+       // 👇 Added success: false so frontend knows it failed
+       return res.status(500).json({ success: false, message: 'Failed to send OTP' });
     }
 
-    // 5. Success!
     console.log('✅ OTP Email sent successfully via Brevo');
-    res.status(200).json({ message: 'OTP Sent successfully' });
+    
+    // 👇 BUG FIX #2: ADDED 'success: true' SO THE FRONTEND CHANGES THE PAGE!
+    res.status(200).json({ success: true, message: 'OTP Sent successfully' });
 
   } catch (error) {
     console.error('❌ Server Error:', error);
-    res.status(500).json({ message: 'Failed to process OTP request' });
+    res.status(500).json({ success: false, message: 'Failed to process OTP request' });
   }
 });
-
 app.post('/verify-otp', async (req, res) => {
     const { email, otp, name, phone, type } = req.body;
     if (otpStore[email] === otp) {
