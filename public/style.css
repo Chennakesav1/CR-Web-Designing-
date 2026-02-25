@@ -310,3 +310,81 @@ footer { text-align: center; padding: 40px; background: #000; margin-top: 50px; 
     transform: translateX(-5px) scale(1.1);
     box-shadow: 0 6px 12px rgba(0,0,0,0.5);
 }
+
+/* =========================================
+   RESPONSIVE DESIGN (Tablets & Mobiles)
+   Will not affect desktop views
+   ========================================= */
+
+/* Make the product grid automatically responsive */
+#product-grid, .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Tablets (768px and below) */
+@media screen and (max-width: 768px) {
+    /* Stack navigation */
+    nav {
+        flex-direction: column;
+        padding: 15px;
+        text-align: center;
+        gap: 15px;
+    }
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding: 0;
+    }
+    
+    /* Adjust Hero Text */
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    /* Stack About Section vertically */
+    .about-content {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+    .about-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    /* Fix Modal for mobile */
+    .modal-content {
+        width: 90%;
+        margin: 10% auto;
+        padding: 20px;
+    }
+}
+
+/* Mobile Phones (480px and below) */
+@media screen and (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    /* Make nav links stack on very small screens */
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Stack Footer elements */
+    footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+}
